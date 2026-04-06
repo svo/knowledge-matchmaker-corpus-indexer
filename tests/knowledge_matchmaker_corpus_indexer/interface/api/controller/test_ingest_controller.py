@@ -6,8 +6,7 @@ from fastapi.testclient import TestClient
 
 from knowledge_matchmaker_corpus_indexer.application.use_case.get_job_use_case import GetJobUseCase
 from knowledge_matchmaker_corpus_indexer.application.use_case.ingest_document_use_case import IngestDocumentUseCase
-from knowledge_matchmaker_corpus_indexer.domain.model.corpus_document import CorpusDocument
-from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionJob, JobStatus
+from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionJob, IngestionStatus
 from knowledge_matchmaker_corpus_indexer.interface.api.controller.ingest_controller import create_ingest_controller
 
 
@@ -18,8 +17,7 @@ def _make_client(ingest_use_case: IngestDocumentUseCase, get_job_use_case: GetJo
 
 
 def _make_complete_job(job_id: str = "abc") -> IngestionJob:
-    doc = CorpusDocument(title="T", author="A", source_url="http://x.com", full_text="text")
-    return IngestionJob(job_id=job_id, status=JobStatus.complete, document=doc)
+    return IngestionJob(job_id=job_id, document_title="T", status=IngestionStatus.COMPLETED)
 
 
 class TestIngestController:
@@ -29,7 +27,7 @@ class TestIngestController:
         get_job_uc = Mock(spec=GetJobUseCase)
         client = _make_client(ingest_uc, get_job_uc)
 
-        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "full_text": "text"})
+        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "content": "text", "publication_date": "2024-01-01"})
 
         assert_that(response.status_code).is_equal_to(202)
 
@@ -39,7 +37,7 @@ class TestIngestController:
         get_job_uc = Mock(spec=GetJobUseCase)
         client = _make_client(ingest_uc, get_job_uc)
 
-        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "full_text": "text"})
+        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "content": "text", "publication_date": "2024-01-01"})
 
         assert_that(response.json()["job_id"]).is_equal_to("my-job-id")
 
@@ -69,6 +67,6 @@ class TestIngestController:
         get_job_uc = Mock(spec=GetJobUseCase)
         client = _make_client(ingest_uc, get_job_uc)
 
-        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "full_text": "text"})
+        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "content": "text", "publication_date": "2024-01-01"})
 
         assert_that(response.status_code).is_equal_to(500)

@@ -1,50 +1,45 @@
 from unittest.mock import Mock
 
+import pytest
 from assertpy import assert_that
 
 from knowledge_matchmaker_corpus_indexer.application.use_case.ingest_document_use_case import IngestDocumentUseCase
 from knowledge_matchmaker_corpus_indexer.domain.model.corpus_document import CorpusDocument
-from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import JobStatus
-from knowledge_matchmaker_corpus_indexer.domain.port.document_indexer_port import DocumentIndexerPort
-from knowledge_matchmaker_corpus_indexer.domain.port.job_repository_port import JobRepositoryPort
+from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionStatus
+from knowledge_matchmaker_corpus_indexer.domain.service.corpus_indexer import CorpusIndexer
 
 
 class TestIngestDocumentUseCase:
-    def _make_doc(self) -> CorpusDocument:
-        return CorpusDocument(title="T", author="A", source_url="http://x.com", full_text="text")
+    @pytest.fixture
+    def mock_corpus_indexer(self) -> Mock:
+        return Mock(spec=CorpusIndexer)
 
-    def test_should_return_complete_status_when_indexing_succeeds(self) -> None:
-        mock_indexer = Mock(spec=DocumentIndexerPort)
-        mock_repo = Mock(spec=JobRepositoryPort)
-        use_case = IngestDocumentUseCase(indexer=mock_indexer, job_repository=mock_repo)
+    @pytest.fixture
+    def use_case(self, mock_corpus_indexer) -> IngestDocumentUseCase:
+        return IngestDocumentUseCase(mock_corpus_indexer)
 
-        result = use_case.execute(self._make_doc())
+    @pytest.fixture
+    def sample_document(self) -> CorpusDocument:
+        return CorpusDocument(
+            title="Sample Title",
+            author="Sample Author",
+            source_url="https://example.com",
+            publication_date="2024-01-01",
+            content="Sample content",
+        )
 
-        assert_that(result.status).is_equal_to(JobStatus.complete)
+    def test_should_call_indexer_with_document(self, use_case, mock_corpus_indexer, sample_document):
+        use_case.execute(sample_document)
 
-    def test_should_call_indexer_when_ingesting(self) -> None:
-        mock_indexer = Mock(spec=DocumentIndexerPort)
-        mock_repo = Mock(spec=JobRepositoryPort)
-        use_case = IngestDocumentUseCase(indexer=mock_indexer, job_repository=mock_repo)
+        mock_corpus_indexer.index.assert_called_once()
+        assert_that(mock_corpus_indexer.index.call_args[0][0]).is_equal_to(sample_document)
 
-        use_case.execute(self._make_doc())
+    def test_should_return_completed_job(self, use_case, mock_corpus_indexer, sample_document):
+        result = use_case.execute(sample_document)
 
-        assert_that(mock_indexer.index.call_count).is_equal_to(1)
+        assert_that(result.status).is_equal_to(IngestionStatus.COMPLETED)
 
-    def test_should_save_job_to_repository_when_ingesting(self) -> None:
-        mock_indexer = Mock(spec=DocumentIndexerPort)
-        mock_repo = Mock(spec=JobRepositoryPort)
-        use_case = IngestDocumentUseCase(indexer=mock_indexer, job_repository=mock_repo)
+    def test_should_return_job_with_document_title(self, use_case, mock_corpus_indexer, sample_document):
+        result = use_case.execute(sample_document)
 
-        use_case.execute(self._make_doc())
-
-        assert_that(mock_repo.save.call_count).is_greater_than(0)
-
-    def test_should_return_job_with_job_id_when_ingesting(self) -> None:
-        mock_indexer = Mock(spec=DocumentIndexerPort)
-        mock_repo = Mock(spec=JobRepositoryPort)
-        use_case = IngestDocumentUseCase(indexer=mock_indexer, job_repository=mock_repo)
-
-        result = use_case.execute(self._make_doc())
-
-        assert_that(result.job_id).is_not_empty()
+        assert_that(result.document_title).is_equal_to(sample_document.title)

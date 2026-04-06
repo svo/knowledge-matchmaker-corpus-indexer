@@ -3,28 +3,33 @@ from assertpy import assert_that
 from knowledge_matchmaker_corpus_indexer.domain.model.corpus_document import CorpusDocument
 
 
-class TestCorpusDocument:
-    def test_should_store_title_when_created(self) -> None:
-        doc = CorpusDocument(title="Test", author="Author", source_url="http://example.com", full_text="text")
+def make_document(**kwargs):
+    defaults = {
+        "title": "Test Title",
+        "author": "Test Author",
+        "source_url": "https://example.com",
+        "publication_date": "2024-01-01",
+        "content": "Test content",
+    }
+    defaults.update(kwargs)
+    return CorpusDocument(**defaults)
 
-        assert_that(doc.title).is_equal_to("Test")
 
-    def test_should_store_author_when_created(self) -> None:
-        doc = CorpusDocument(title="Test", author="Author", source_url="http://example.com", full_text="text")
+def test_should_have_title():
+    assert_that(make_document(title="My Title").title).is_equal_to("My Title")
 
-        assert_that(doc.author).is_equal_to("Author")
 
-    def test_should_store_source_url_when_created(self) -> None:
-        doc = CorpusDocument(title="Test", author="Author", source_url="http://example.com", full_text="text")
+def test_should_have_author():
+    assert_that(make_document(author="Jane Doe").author).is_equal_to("Jane Doe")
 
-        assert_that(doc.source_url).is_equal_to("http://example.com")
 
-    def test_should_store_full_text_when_created(self) -> None:
-        doc = CorpusDocument(title="Test", author="Author", source_url="http://example.com", full_text="text")
+def test_should_have_source_url():
+    assert_that(make_document(source_url="https://test.com").source_url).is_equal_to("https://test.com")
 
-        assert_that(doc.full_text).is_equal_to("text")
 
-    def test_should_have_empty_publication_date_by_default(self) -> None:
-        doc = CorpusDocument(title="Test", author="Author", source_url="http://example.com", full_text="text")
+def test_should_have_publication_date():
+    assert_that(make_document(publication_date="2023-06-15").publication_date).is_equal_to("2023-06-15")
 
-        assert_that(doc.publication_date).is_equal_to("")
+
+def test_should_have_content():
+    assert_that(make_document(content="Some content here").content).is_equal_to("Some content here")

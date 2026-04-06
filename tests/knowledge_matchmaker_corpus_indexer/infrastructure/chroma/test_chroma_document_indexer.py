@@ -13,7 +13,7 @@ class TestChromaDocumentIndexer:
         mock_client = Mock(spec=chromadb.ClientAPI)
         mock_client.get_or_create_collection.return_value = mock_collection
         indexer = ChromaDocumentIndexer(client=mock_client)
-        doc = CorpusDocument(title="T", author="A", source_url="http://x.com", full_text="text")
+        doc = CorpusDocument(title="T", author="A", source_url="http://x.com", publication_date="2024-01-01", content="text")
 
         indexer.index("job1", doc)
 
@@ -24,7 +24,7 @@ class TestChromaDocumentIndexer:
         mock_client = Mock(spec=chromadb.ClientAPI)
         mock_client.get_or_create_collection.return_value = mock_collection
         indexer = ChromaDocumentIndexer(client=mock_client)
-        doc = CorpusDocument(title="T", author="A", source_url="http://x.com", full_text="text")
+        doc = CorpusDocument(title="T", author="A", source_url="http://x.com", publication_date="2024-01-01", content="text")
 
         indexer.index("job1", doc)
 

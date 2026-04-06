@@ -1,18 +1,18 @@
 from enum import Enum
+from typing import Optional
 
 from pydantic import BaseModel
 
-from knowledge_matchmaker_corpus_indexer.domain.model.corpus_document import CorpusDocument
 
-
-class JobStatus(str, Enum):
-    queued = "queued"
-    processing = "processing"
-    complete = "complete"
-    failed = "failed"
+class IngestionStatus(str, Enum):
+    PENDING = "PENDING"
+    PROCESSING = "PROCESSING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
 
 
 class IngestionJob(BaseModel):
     job_id: str
-    status: JobStatus
-    document: CorpusDocument
+    document_title: str
+    status: IngestionStatus
+    error_message: Optional[str] = None

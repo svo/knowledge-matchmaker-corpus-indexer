@@ -6,7 +6,6 @@ from knowledge_matchmaker_corpus_indexer.domain.model.corpus_document import Cor
 from knowledge_matchmaker_corpus_indexer.interface.api.data_transfer_object.ingest_data_transfer_object import (
     IngestRequest,
     IngestResponse,
-    JobStatusDTO,
     JobStatusResponse,
 )
 
@@ -21,11 +20,11 @@ def create_ingest_controller(ingest_use_case: IngestDocumentUseCase, get_job_use
                 title=request.title,
                 author=request.author,
                 source_url=request.source_url,
-                full_text=request.full_text,
+                content=request.content,
                 publication_date=request.publication_date,
             )
             job = ingest_use_case.execute(document)
-            return IngestResponse(job_id=job.job_id, status=JobStatusDTO(job.status.value))
+            return IngestResponse(job_id=job.job_id, status=job.status.value)
         except Exception as exc:
             raise HTTPException(status_code=500, detail=str(exc)) from exc
 
@@ -33,7 +32,7 @@ def create_ingest_controller(ingest_use_case: IngestDocumentUseCase, get_job_use
     async def get_job(job_id: str) -> JobStatusResponse:
         try:
             job = get_job_use_case.execute(job_id)
-            return JobStatusResponse(job_id=job.job_id, status=JobStatusDTO(job.status.value))
+            return JobStatusResponse(job_id=job.job_id, status=job.status.value)
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=f"Job {job_id} not found") from exc
         except Exception as exc:
