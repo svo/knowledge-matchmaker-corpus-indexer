@@ -1,4 +1,15 @@
-# Python Sprint Zero - Claude Code Instructions
+# Knowledge Matchmaker Corpus Indexer - Claude Code Instructions
+
+## Project Purpose
+
+Ingests a body of literature (papers, books, articles) into a vector store with structured metadata. Runs on port 8002. Write-path only — responsible for ingestion and indexing, not querying. Does NOT summarise sources; stores full texts and structured references for the relationship engine to query directly.
+
+### Core Domain Concepts
+
+- `CorpusDocument` — a work being ingested (title, author, source_url, full_text, publication_date)
+- `IndexedEntry` — an embedding vector plus structured metadata stored in the vector store
+- `IngestionJob` — tracks the status of a document ingestion request
+- `Corpus` — the full body of indexed literature available for matching
 
 ## Absolute Non-Negotiables
 

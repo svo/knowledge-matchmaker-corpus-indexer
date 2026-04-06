@@ -6,8 +6,8 @@ if __name__ == "__main__":
             use_scm_version={"version_scheme": "no-guess-dev"},
             entry_points={
                 "console_scripts": [
-                    "python-sprint-zero=python_sprint_zero.interface.api.main:run",
-                    "python-sprint-zero-cli=python_sprint_zero.interface.cli.main:run",
+                    "knowledge-matchmaker-corpus-indexer=knowledge_matchmaker_corpus_indexer.interface.api.main:run",
+                    "knowledge-matchmaker-corpus-indexer-cli=knowledge_matchmaker_corpus_indexer.interface.cli.main:run",
                 ]
             },
         )
