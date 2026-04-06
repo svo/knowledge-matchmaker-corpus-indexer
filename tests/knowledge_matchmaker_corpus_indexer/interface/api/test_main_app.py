@@ -54,19 +54,19 @@ class TestMainApp:
     def test_should_have_global_container(self):
         assert_that(global_container).is_not_none()
 
-    def test_should_have_create_coconut_route(self):
+    def test_should_have_ingest_route(self):
         openapi_schema = app.openapi()
 
         paths = openapi_schema.get("paths", {})
 
-        assert_that(paths.get("/coconut/", {})).contains("post")
+        assert_that(paths.get("/ingest", {})).contains("post")
 
-    def test_should_have_get_coconut_by_id_route(self):
+    def test_should_have_get_job_route(self):
         openapi_schema = app.openapi()
 
         paths = openapi_schema.get("paths", {})
 
-        assert_that(paths.get("/coconut/{id}", {})).contains("get")
+        assert_that(paths.get("/jobs/{job_id}", {})).contains("get")
 
     def test_should_get_global_container(self):
         container = get_global_container()
