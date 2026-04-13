@@ -10,7 +10,9 @@ from knowledge_matchmaker_corpus_indexer.application.use_case.ingest_document_us
     IngestDocumentUseCase,
 )
 from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionJob, IngestionStatus
-from knowledge_matchmaker_corpus_indexer.interface.api.controller.ingest_document_controller import IngestDocumentController
+from knowledge_matchmaker_corpus_indexer.interface.api.controller.ingest_document_controller import (
+    IngestDocumentController,
+)
 
 
 class TestIngestDocumentController:
@@ -57,7 +59,9 @@ class TestIngestDocumentController:
             status=IngestionStatus.COMPLETED,
         )
 
-    def test_should_return_201_when_ingest_is_called(self, client, mock_ingest_use_case, sample_request_body, sample_job):
+    def test_should_return_201_when_ingest_is_called(
+        self, client, mock_ingest_use_case, sample_request_body, sample_job
+    ):
         mock_ingest_use_case.execute.return_value = sample_job
 
         response = client.post("/ingest", json=sample_request_body)

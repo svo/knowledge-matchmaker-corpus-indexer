@@ -101,7 +101,9 @@ def test_should_maintain_shared_module_independence():
         )
         .match("knowledge_matchmaker_corpus_indexer.shared.*")
         .should_not_import(
-            "knowledge_matchmaker_corpus_indexer.application.*", "knowledge_matchmaker_corpus_indexer.infrastructure.*", "knowledge_matchmaker_corpus_indexer.interface.*"
+            "knowledge_matchmaker_corpus_indexer.application.*",
+            "knowledge_matchmaker_corpus_indexer.infrastructure.*",
+            "knowledge_matchmaker_corpus_indexer.interface.*",
         )
         .check("knowledge_matchmaker_corpus_indexer")
     )

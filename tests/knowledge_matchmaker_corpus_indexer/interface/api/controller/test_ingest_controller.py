@@ -27,7 +27,16 @@ class TestIngestController:
         get_job_uc = Mock(spec=GetJobUseCase)
         client = _make_client(ingest_uc, get_job_uc)
 
-        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "content": "text", "publication_date": "2024-01-01"})
+        response = client.post(
+            "/ingest",
+            json={
+                "title": "T",
+                "author": "A",
+                "source_url": "http://x.com",
+                "content": "text",
+                "publication_date": "2024-01-01",
+            },
+        )
 
         assert_that(response.status_code).is_equal_to(202)
 
@@ -37,7 +46,16 @@ class TestIngestController:
         get_job_uc = Mock(spec=GetJobUseCase)
         client = _make_client(ingest_uc, get_job_uc)
 
-        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "content": "text", "publication_date": "2024-01-01"})
+        response = client.post(
+            "/ingest",
+            json={
+                "title": "T",
+                "author": "A",
+                "source_url": "http://x.com",
+                "content": "text",
+                "publication_date": "2024-01-01",
+            },
+        )
 
         assert_that(response.json()["job_id"]).is_equal_to("my-job-id")
 
@@ -67,6 +85,25 @@ class TestIngestController:
         get_job_uc = Mock(spec=GetJobUseCase)
         client = _make_client(ingest_uc, get_job_uc)
 
-        response = client.post("/ingest", json={"title": "T", "author": "A", "source_url": "http://x.com", "content": "text", "publication_date": "2024-01-01"})
+        response = client.post(
+            "/ingest",
+            json={
+                "title": "T",
+                "author": "A",
+                "source_url": "http://x.com",
+                "content": "text",
+                "publication_date": "2024-01-01",
+            },
+        )
+
+        assert_that(response.status_code).is_equal_to(500)
+
+    def test_should_return_500_when_get_job_raises_generic_exception(self) -> None:
+        ingest_uc = Mock(spec=IngestDocumentUseCase)
+        get_job_uc = Mock(spec=GetJobUseCase)
+        get_job_uc.execute.side_effect = Exception("unexpected error")
+        client = _make_client(ingest_uc, get_job_uc)
+
+        response = client.get("/jobs/abc")
 
         assert_that(response.status_code).is_equal_to(500)

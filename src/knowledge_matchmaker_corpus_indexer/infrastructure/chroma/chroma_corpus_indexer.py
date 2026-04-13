@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Sequence, cast
 
 import chromadb
 import openai
@@ -23,13 +23,15 @@ class ChromaCorpusIndexer(CorpusIndexer):
 
         self._collection.add(
             ids=[job_id],
-            embeddings=[embedding],
-            metadatas=[{
-                "title": document.title,
-                "author": document.author,
-                "source_url": document.source_url,
-                "publication_date": document.publication_date,
-            }],
+            embeddings=[cast(Sequence[float], embedding)],
+            metadatas=[
+                {
+                    "title": document.title,
+                    "author": document.author,
+                    "source_url": document.source_url,
+                    "publication_date": document.publication_date,
+                }
+            ],
         )
 
         self._jobs[job_id] = IngestionJob(

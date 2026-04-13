@@ -16,7 +16,9 @@ from knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentic
 
 
 class TestGetBasicAuthenticator:
-    @patch("knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication.get_application_setting_provider")
+    @patch(
+        "knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication.get_application_setting_provider"
+    )
     def test_should_create_authenticator_with_configured_user(self, mock_get_provider):
         mock_provider = Mock()
         mock_provider.get.side_effect = lambda key: "admin" if key == "admin" else "password"
@@ -147,3 +149,8 @@ class TestSecurityDependency:
 
         assert_that(response.headers).contains_key("www-authenticate")
         assert_that(response.headers["www-authenticate"]).is_equal_to("Basic")
+
+    def test_should_return_require_authentication_when_authentication_dependency_called(self, security_dependency):
+        result = security_dependency.authentication_dependency()
+
+        assert_that(result).is_equal_to(security_dependency.require_authentication)

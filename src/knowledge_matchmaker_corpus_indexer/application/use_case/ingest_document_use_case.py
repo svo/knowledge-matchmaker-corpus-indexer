@@ -11,7 +11,6 @@ class IngestDocumentUseCase:
 
     def execute(self, document: CorpusDocument) -> IngestionJob:
         job_id = str(uuid.uuid4())
-        job = IngestionJob(job_id=job_id, document_title=document.title, status=IngestionStatus.PROCESSING)
         self._corpus_indexer.index(document, job_id)
         return IngestionJob(job_id=job_id, document_title=document.title, status=IngestionStatus.COMPLETED)
 

@@ -1,4 +1,7 @@
-from knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication import BasicAuthenticator, SecurityDependency
+from knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication import (
+    BasicAuthenticator,
+    SecurityDependency,
+)
 
 import pytest
 

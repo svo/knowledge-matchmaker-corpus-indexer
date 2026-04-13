@@ -3,9 +3,12 @@ from unittest.mock import Mock
 import pytest
 from assertpy import assert_that
 
-from knowledge_matchmaker_corpus_indexer.application.use_case.ingest_document_use_case import IngestDocumentUseCase
+from knowledge_matchmaker_corpus_indexer.application.use_case.ingest_document_use_case import (
+    GetIngestionJobUseCase,
+    IngestDocumentUseCase,
+)
 from knowledge_matchmaker_corpus_indexer.domain.model.corpus_document import CorpusDocument
-from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionStatus
+from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionJob, IngestionStatus
 from knowledge_matchmaker_corpus_indexer.domain.service.corpus_indexer import CorpusIndexer
 
 
@@ -43,3 +46,15 @@ class TestIngestDocumentUseCase:
         result = use_case.execute(sample_document)
 
         assert_that(result.document_title).is_equal_to(sample_document.title)
+
+
+class TestGetIngestionJobUseCase:
+    def test_should_return_job_status_from_indexer(self) -> None:
+        mock_indexer = Mock(spec=CorpusIndexer)
+        expected_job = IngestionJob(job_id="job-1", document_title="Doc", status=IngestionStatus.COMPLETED)
+        mock_indexer.get_job_status.return_value = expected_job
+        use_case = GetIngestionJobUseCase(mock_indexer)
+
+        result = use_case.execute("job-1")
+
+        assert_that(result).is_equal_to(expected_job)

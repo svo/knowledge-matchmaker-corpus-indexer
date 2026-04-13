@@ -1,8 +1,9 @@
-import pytest
 from assertpy import assert_that
 
 from knowledge_matchmaker_corpus_indexer.domain.model.ingestion_job import IngestionJob, IngestionStatus
-from knowledge_matchmaker_corpus_indexer.infrastructure.persistence.in_memory.in_memory_job_repository import InMemoryJobRepository
+from knowledge_matchmaker_corpus_indexer.infrastructure.persistence.in_memory.in_memory_job_repository import (
+    InMemoryJobRepository,
+)
 
 
 class TestInMemoryJobRepository:
