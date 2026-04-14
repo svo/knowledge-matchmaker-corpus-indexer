@@ -48,7 +48,7 @@ class TestIngestDocumentController:
             "author": "Test Author",
             "source_url": "https://example.com",
             "publication_date": "2024-01-01",
-            "content": "Test content",
+            "full_text": "Test content",
         }
 
     @pytest.fixture
@@ -56,7 +56,7 @@ class TestIngestDocumentController:
         return IngestionJob(
             job_id="test-job-id-123",
             document_title="Test Document",
-            status=IngestionStatus.COMPLETED,
+            status=IngestionStatus.COMPLETE,
         )
 
     def test_should_return_201_when_ingest_is_called(

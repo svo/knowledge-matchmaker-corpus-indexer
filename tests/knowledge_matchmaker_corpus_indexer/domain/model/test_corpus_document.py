@@ -9,7 +9,7 @@ def make_document(**kwargs):
         "author": "Test Author",
         "source_url": "https://example.com",
         "publication_date": "2024-01-01",
-        "content": "Test content",
+        "full_text": "Test content",
     }
     defaults.update(kwargs)
     return CorpusDocument(**defaults)
@@ -31,5 +31,5 @@ def test_should_have_publication_date():
     assert_that(make_document(publication_date="2023-06-15").publication_date).is_equal_to("2023-06-15")
 
 
-def test_should_have_content():
-    assert_that(make_document(content="Some content here").content).is_equal_to("Some content here")
+def test_should_have_full_text():
+    assert_that(make_document(full_text="Some content here").full_text).is_equal_to("Some content here")

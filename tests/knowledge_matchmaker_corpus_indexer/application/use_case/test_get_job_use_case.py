@@ -9,7 +9,7 @@ from knowledge_matchmaker_corpus_indexer.domain.port.job_repository_port import 
 
 class TestGetJobUseCase:
     def _make_job(self) -> IngestionJob:
-        return IngestionJob(job_id="abc", document_title="Test Doc", status=IngestionStatus.COMPLETED)
+        return IngestionJob(job_id="abc", document_title="Test Doc", status=IngestionStatus.COMPLETE)
 
     def test_should_return_job_when_found(self) -> None:
         mock_repo = Mock(spec=JobRepositoryPort)

@@ -6,4 +6,4 @@ class CorpusDocument(BaseModel):
     author: str
     source_url: str
     publication_date: str
-    content: str
+    full_text: str

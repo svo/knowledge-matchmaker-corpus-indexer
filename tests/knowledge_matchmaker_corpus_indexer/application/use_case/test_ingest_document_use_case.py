@@ -28,7 +28,7 @@ class TestIngestDocumentUseCase:
             author="Sample Author",
             source_url="https://example.com",
             publication_date="2024-01-01",
-            content="Sample content",
+            full_text="Sample content",
         )
 
     def test_should_call_indexer_with_document(self, use_case, mock_corpus_indexer, sample_document):
@@ -37,10 +37,10 @@ class TestIngestDocumentUseCase:
         mock_corpus_indexer.index.assert_called_once()
         assert_that(mock_corpus_indexer.index.call_args[0][0]).is_equal_to(sample_document)
 
-    def test_should_return_completed_job(self, use_case, mock_corpus_indexer, sample_document):
+    def test_should_return_queued_job(self, use_case, mock_corpus_indexer, sample_document):
         result = use_case.execute(sample_document)
 
-        assert_that(result.status).is_equal_to(IngestionStatus.COMPLETED)
+        assert_that(result.status).is_equal_to(IngestionStatus.QUEUED)
 
     def test_should_return_job_with_document_title(self, use_case, mock_corpus_indexer, sample_document):
         result = use_case.execute(sample_document)
@@ -51,7 +51,7 @@ class TestIngestDocumentUseCase:
 class TestGetIngestionJobUseCase:
     def test_should_return_job_status_from_indexer(self) -> None:
         mock_indexer = Mock(spec=CorpusIndexer)
-        expected_job = IngestionJob(job_id="job-1", document_title="Doc", status=IngestionStatus.COMPLETED)
+        expected_job = IngestionJob(job_id="job-1", document_title="Doc", status=IngestionStatus.COMPLETE)
         mock_indexer.get_job_status.return_value = expected_job
         use_case = GetIngestionJobUseCase(mock_indexer)
 

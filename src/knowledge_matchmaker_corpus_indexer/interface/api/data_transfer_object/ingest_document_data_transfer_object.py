@@ -8,7 +8,7 @@ class IngestDocumentRequestDto(BaseModel):
     author: str
     source_url: str
     publication_date: str
-    content: str
+    full_text: str
 
     @classmethod
     def from_domain_model(cls, domain_model: Any) -> "IngestDocumentRequestDto":
@@ -17,7 +17,7 @@ class IngestDocumentRequestDto(BaseModel):
             author=domain_model.author,
             source_url=domain_model.source_url,
             publication_date=domain_model.publication_date,
-            content=domain_model.content,
+            full_text=domain_model.full_text,
         )
 
 

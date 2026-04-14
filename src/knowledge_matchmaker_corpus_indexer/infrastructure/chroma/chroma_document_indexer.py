@@ -11,7 +11,7 @@ class ChromaDocumentIndexer(DocumentIndexerPort):
     def index(self, job_id: str, document: CorpusDocument) -> None:
         self._collection.add(
             ids=[job_id],
-            documents=[document.content],
+            documents=[document.full_text],
             metadatas=[
                 {
                     "title": document.title,

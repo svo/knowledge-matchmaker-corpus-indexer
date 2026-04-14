@@ -109,6 +109,18 @@ def test_should_maintain_shared_module_independence():
     )
 
 
+def test_should_not_import_openai_in_chroma_corpus_indexer():
+    (
+        archrule(
+            "Chroma Corpus Indexer OpenAI Independence",
+            comment="ChromaCorpusIndexer should not import openai directly",
+        )
+        .match("knowledge_matchmaker_corpus_indexer.infrastructure.chroma.*")
+        .should_not_import("openai.*")
+        .check("knowledge_matchmaker_corpus_indexer")
+    )
+
+
 def test_should_have_no_fastapi_imports_in_domain():
     (
         archrule(

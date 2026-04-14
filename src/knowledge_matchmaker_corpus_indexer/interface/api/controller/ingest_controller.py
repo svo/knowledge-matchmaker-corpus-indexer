@@ -20,7 +20,7 @@ def create_ingest_controller(ingest_use_case: IngestDocumentUseCase, get_job_use
                 title=request.title,
                 author=request.author,
                 source_url=request.source_url,
-                content=request.content,
+                full_text=request.full_text,
                 publication_date=request.publication_date,
             )
             job = ingest_use_case.execute(document)

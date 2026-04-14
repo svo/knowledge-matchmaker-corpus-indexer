@@ -14,7 +14,7 @@ class TestIngestDocumentRequestDtoFromDomainModel:
         domain_model.author = "Author"
         domain_model.source_url = "http://example.com"
         domain_model.publication_date = "2024-01-01"
-        domain_model.content = "Some content"
+        domain_model.full_text = "Some content"
 
         result = IngestDocumentRequestDto.from_domain_model(domain_model)
 

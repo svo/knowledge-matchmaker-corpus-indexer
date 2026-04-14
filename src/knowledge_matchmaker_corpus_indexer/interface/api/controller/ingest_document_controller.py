@@ -43,7 +43,7 @@ class IngestDocumentController:
             author=request.author,
             source_url=request.source_url,
             publication_date=request.publication_date,
-            content=request.content,
+            full_text=request.full_text,
         )
         job = self._ingest_document_use_case.execute(document)
         return IngestionJobResponseDto.from_domain_model(job)

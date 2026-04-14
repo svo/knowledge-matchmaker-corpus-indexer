@@ -11,7 +11,9 @@ from knowledge_matchmaker_corpus_indexer.application.use_case.ingest_document_us
 )
 from knowledge_matchmaker_corpus_indexer.domain.health.health_checker import HealthChecker
 from knowledge_matchmaker_corpus_indexer.domain.service.corpus_indexer import CorpusIndexer
+from knowledge_matchmaker_corpus_indexer.domain.service.embedder import Embedder
 from knowledge_matchmaker_corpus_indexer.infrastructure.chroma.chroma_corpus_indexer import ChromaCorpusIndexer
+from knowledge_matchmaker_corpus_indexer.infrastructure.openai.openai_embedder import OpenAIEmbedder
 from knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication import (
     BasicAuthenticator,
     SecurityDependency,
@@ -30,7 +32,9 @@ app = FastAPI(title="Knowledge Matchmaker Corpus Indexer API", version="1.0.0")
 def get_container() -> Container:
     container = Container()
 
-    chroma_indexer = ChromaCorpusIndexer()
+    embedder = OpenAIEmbedder()
+    container[Embedder] = lambda: embedder  # type: ignore
+    chroma_indexer = ChromaCorpusIndexer(embedder=embedder)
     container[CorpusIndexer] = lambda: chroma_indexer  # type: ignore
     container[IngestDocumentUseCase] = IngestDocumentUseCase
     container[GetIngestionJobUseCase] = GetIngestionJobUseCase

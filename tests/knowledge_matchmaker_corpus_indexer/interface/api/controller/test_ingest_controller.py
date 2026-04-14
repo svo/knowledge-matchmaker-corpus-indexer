@@ -17,7 +17,7 @@ def _make_client(ingest_use_case: IngestDocumentUseCase, get_job_use_case: GetJo
 
 
 def _make_complete_job(job_id: str = "abc") -> IngestionJob:
-    return IngestionJob(job_id=job_id, document_title="T", status=IngestionStatus.COMPLETED)
+    return IngestionJob(job_id=job_id, document_title="T", status=IngestionStatus.COMPLETE)
 
 
 class TestIngestController:
@@ -33,7 +33,7 @@ class TestIngestController:
                 "title": "T",
                 "author": "A",
                 "source_url": "http://x.com",
-                "content": "text",
+                "full_text": "text",
                 "publication_date": "2024-01-01",
             },
         )
@@ -52,7 +52,7 @@ class TestIngestController:
                 "title": "T",
                 "author": "A",
                 "source_url": "http://x.com",
-                "content": "text",
+                "full_text": "text",
                 "publication_date": "2024-01-01",
             },
         )
@@ -91,7 +91,7 @@ class TestIngestController:
                 "title": "T",
                 "author": "A",
                 "source_url": "http://x.com",
-                "content": "text",
+                "full_text": "text",
                 "publication_date": "2024-01-01",
             },
         )

@@ -5,7 +5,7 @@ class IngestRequest(BaseModel):
     title: str
     author: str
     source_url: str
-    content: str
+    full_text: str
     publication_date: str = ""
 
 

@@ -10,7 +10,7 @@ class TestInMemoryDocumentIndexer:
     def test_should_index_document_when_index_called(self) -> None:
         indexer = InMemoryDocumentIndexer()
         doc = CorpusDocument(
-            title="T", author="A", source_url="http://x.com", publication_date="2024-01-01", content="text"
+            title="T", author="A", source_url="http://x.com", publication_date="2024-01-01", full_text="text"
         )
 
         indexer.index("job1", doc)
@@ -20,7 +20,7 @@ class TestInMemoryDocumentIndexer:
     def test_should_store_job_id_with_document_when_indexed(self) -> None:
         indexer = InMemoryDocumentIndexer()
         doc = CorpusDocument(
-            title="T", author="A", source_url="http://x.com", publication_date="2024-01-01", content="text"
+            title="T", author="A", source_url="http://x.com", publication_date="2024-01-01", full_text="text"
         )
 
         indexer.index("job1", doc)

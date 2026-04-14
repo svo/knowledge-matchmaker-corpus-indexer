@@ -1,9 +1,15 @@
-from knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication import (
+import os
+import tempfile
+
+import pytest
+
+os.environ.setdefault("CHROMA_DATA_PATH", tempfile.mkdtemp())
+os.environ.setdefault("OPENAI_API_KEY", "test-key-not-used")
+
+from knowledge_matchmaker_corpus_indexer.infrastructure.security.basic_authentication import (  # noqa: E402
     BasicAuthenticator,
     SecurityDependency,
 )
-
-import pytest
 
 
 @pytest.fixture

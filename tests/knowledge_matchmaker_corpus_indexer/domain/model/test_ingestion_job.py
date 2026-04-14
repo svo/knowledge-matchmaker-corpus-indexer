@@ -7,7 +7,7 @@ def make_job(**kwargs):
     defaults = {
         "job_id": "test-job-id",
         "document_title": "Test Document",
-        "status": IngestionStatus.PENDING,
+        "status": IngestionStatus.QUEUED,
     }
     defaults.update(kwargs)
     return IngestionJob(**defaults)
@@ -22,7 +22,7 @@ def test_should_have_document_title():
 
 
 def test_should_have_status():
-    assert_that(make_job(status=IngestionStatus.COMPLETED).status).is_equal_to(IngestionStatus.COMPLETED)
+    assert_that(make_job(status=IngestionStatus.COMPLETE).status).is_equal_to(IngestionStatus.COMPLETE)
 
 
 def test_should_default_error_message_to_none():

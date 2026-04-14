@@ -8,7 +8,7 @@ from knowledge_matchmaker_corpus_indexer.infrastructure.persistence.in_memory.in
 
 class TestInMemoryJobRepository:
     def _make_job(self, job_id: str = "abc") -> IngestionJob:
-        return IngestionJob(job_id=job_id, document_title="Test Doc", status=IngestionStatus.PENDING)
+        return IngestionJob(job_id=job_id, document_title="Test Doc", status=IngestionStatus.QUEUED)
 
     def test_should_return_job_when_saved_and_found(self) -> None:
         repo = InMemoryJobRepository()
@@ -27,9 +27,9 @@ class TestInMemoryJobRepository:
     def test_should_update_job_when_saved_again(self) -> None:
         repo = InMemoryJobRepository()
         repo.save(self._make_job())
-        updated_job = IngestionJob(job_id="abc", document_title="Test Doc", status=IngestionStatus.COMPLETED)
+        updated_job = IngestionJob(job_id="abc", document_title="Test Doc", status=IngestionStatus.COMPLETE)
         repo.save(updated_job)
 
         result = repo.find("abc")
 
-        assert_that(result.status).is_equal_to(IngestionStatus.COMPLETED)
+        assert_that(result.status).is_equal_to(IngestionStatus.COMPLETE)
